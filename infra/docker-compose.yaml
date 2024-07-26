@@ -28,7 +28,8 @@ services:
   backend:
     build:
       context: ../
-      dockerfile: infra/Dockerfile_backend
+      dockerfile: infra/Dockerfile
+    command: bash -c ./docker-entrypoint.sh
     depends_on:
       db:
         condition: service_healthy
@@ -36,18 +37,31 @@ services:
       - 8000:8000
     env_file:
       - ../.env
-    command: bash -c ./docker-entrypoint.sh
 
   celery:
     build:
       context: ../
-      dockerfile: Dockerfile_celery
+      dockerfile: infra/Dockerfile
+    command: poetry run celery --app=core worker -l info
     depends_on:
       - db
       - rabbitmq
+    env_file:
+      - ../.env
 
   rabbitmq:
     image: rabbitmq:3-management
     expose:
       - 5672
       - 15672
+
+  flower:
+    build:
+      context: ../
+      dockerfile: infra/Dockerfile
+    command: poetry run celery --app=core flower -l=info
+    ports:
+      - 5555:5555
+    depends_on:
+      - rabbitmq
+      - celery

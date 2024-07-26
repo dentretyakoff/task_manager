@@ -2,14 +2,14 @@ from django.conf import settings
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from .views import TaskViewSet
+from .views import ApplicationViewSet
 
 
 # Версия API
 API_VERSION = settings.API_VERSION
 
 router = DefaultRouter()
-router.register('tasks', TaskViewSet)
+router.register('applications', ApplicationViewSet)
 
 urlpatterns = [
     path(f'{API_VERSION}/', include(router.urls)),

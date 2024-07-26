@@ -20,8 +20,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_celery_beat',
     'api.apps.ApiConfig',
-    'tasks.apps.TasksConfig',
+    'applications.apps.ApplicationsConfig',
 ]
 
 MIDDLEWARE = [
@@ -110,3 +111,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Версия API
 API_VERSION = 'v1'
+
+# Настройки Celery
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'amqp://rabbitmq')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'rpc://')
