@@ -37,3 +37,17 @@ services:
     env_file:
       - ../.env
     command: bash -c ./docker-entrypoint.sh
+
+  celery:
+    build:
+      context: ../
+      dockerfile: Dockerfile_celery
+    depends_on:
+      - db
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    expose:
+      - 5672
+      - 15672
