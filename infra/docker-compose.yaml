@@ -1,0 +1,39 @@
+version: '3.8'
+
+volumes:
+  pg_data_tasks:
+
+
+services:
+  db:
+    image: postgres:13.3-alpine
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $${POSTGRES_USER:?err} -d $${POSTGRES_DB:?err}"
+        ]
+      start_period: 30s
+      timeout: 10s
+      interval: 5s
+      retries: 10
+    restart: always
+    volumes:
+      - pg_data_tasks:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    env_file:
+      - ../.env
+
+  backend:
+    build:
+      context: ../
+      dockerfile: infra/Dockerfile_backend
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8000:8000
+    env_file:
+      - ../.env
+    command: bash -c ./docker-entrypoint.sh
