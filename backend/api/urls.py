@@ -5,7 +5,6 @@ from rest_framework.routers import DefaultRouter
 from .views import ApplicationViewSet
 
 
-# Версия API
 API_VERSION = settings.API_VERSION
 
 router = DefaultRouter()

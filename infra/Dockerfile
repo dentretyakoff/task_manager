@@ -4,6 +4,7 @@ RUN pip install poetry==1.8.2
 
 COPY ./backend /app
 COPY poetry.lock pyproject.toml /app/
+COPY ./fixtures/applications.json /app/
 
 WORKDIR /app
 RUN poetry config virtualenvs.create false && \

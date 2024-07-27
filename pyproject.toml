@@ -16,6 +16,7 @@ taskipy = "^1.13.0"
 celery = "^5.4.0"
 django-celery-beat = "^2.6.0"
 flower = "^2.0.1"
+django-elasticsearch-dsl = "^8.0"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^7.0.0"
@@ -28,3 +29,5 @@ build-backend = "poetry.core.masonry.api"
 makemigrations = "python manage.py makemigrations"
 migrate = "python manage.py migrate"
 start = "python manage.py runserver 0:8000"
+rebuild_index = "python manage.py search_index --rebuild -f"
+load_data = "python manage.py loaddata applications.json"

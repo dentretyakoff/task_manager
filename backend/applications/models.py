@@ -22,3 +22,6 @@ class Application(models.Model):
         'Время создания',
         auto_now_add=True
     )
+
+    def __str__(self) -> str:
+        return self.name
