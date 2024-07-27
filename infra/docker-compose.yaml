@@ -1,0 +1,81 @@
+version: '3.8'
+
+volumes:
+  pg_data_tasks:
+
+
+services:
+  db:
+    image: postgres:13.3-alpine
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $${POSTGRES_USER:?err} -d $${POSTGRES_DB:?err}"
+        ]
+      start_period: 30s
+      timeout: 10s
+      interval: 5s
+      retries: 10
+    restart: always
+    volumes:
+      - pg_data_tasks:/var/lib/postgresql/data/
+    expose:
+      - 5432
+    env_file:
+      - ../.env
+
+  backend:
+    build:
+      context: ../
+      dockerfile: infra/Dockerfile
+    command: bash -c ./docker-entrypoint.sh
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    ports:
+      - 8000:8000
+    env_file:
+      - ../.env
+
+  celery:
+    build:
+      context: ../
+      dockerfile: infra/Dockerfile
+    command: poetry run celery --app=core worker -l info
+    depends_on:
+      - db
+      - rabbitmq
+    env_file:
+      - ../.env
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    expose:
+      - 5672
+      - 15672
+
+  flower:
+    build:
+      context: ../
+      dockerfile: infra/Dockerfile
+    command: poetry run celery --app=core flower -l=info
+    ports:
+      - 5555:5555
+    depends_on:
+      - rabbitmq
+      - celery
+
+  elasticsearch:
+    image: elasticsearch:7.14.0
+    environment:
+      - discovery.type=single-node
+    expose:
+      - 9200
+    healthcheck:
+      test: curl -s http://localhost:9200 >/dev/null || exit 1
+      interval: 10s
+      retries: 5
+      timeout: 10s
