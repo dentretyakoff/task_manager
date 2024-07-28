@@ -44,7 +44,7 @@ sudo apt-get install docker-compose-plugin
 ```
 - Перейдите в директорию проекта: `cd task_manager`
 - Создайте файл `.env` и запишите в него необходимые переменные окружения по примеру `infra/.env.example`
-- Запустите проект в контейнерах `sudo docker compose -f infra/docker-compose.yaml up -d`
+- Запустите проект в контейнерах `sudo docker compose -f infra/docker-compose.yaml -p task-manager-tdv up -d`
 
 
 ### Примеры запросов <a id="requests"></a>
