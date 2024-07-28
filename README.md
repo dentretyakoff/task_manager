@@ -160,7 +160,7 @@ response body
     "create_date": "2024-07-27T23:07:01.313000+07:00"
 }
 ```
-6. Обновление одного поля по id:
+7. Удаление задачи по id:
 ```
 DELETE http://localhost:8000/api/v1/applications/1/
 204 No Content
