@@ -1,0 +1,32 @@
+[
+    {
+      "model": "applications.application",
+      "pk": 1,
+      "fields": {
+        "name": "Задача",
+        "description": "Описание задачи",
+        "status": "completed",
+        "create_date": "2024-07-27T16:07:01.313Z"
+      }
+    },
+    {
+      "model": "applications.application",
+      "pk": 2,
+      "fields": {
+        "name": "Task",
+        "description": "Description",
+        "status": "completed",
+        "create_date": "2024-07-27T16:07:19.008Z"
+      }
+    },
+    {
+      "model": "applications.application",
+      "pk": 3,
+      "fields": {
+        "name": "Task",
+        "description": "Описание задачи",
+        "status": "completed",
+        "create_date": "2024-07-27T16:07:26.827Z"
+      }
+    }
+  ]
